@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     "admin_auto_filters",
     "corsheaders",
     "phonenumber_field",
+    "drf_spectacular",
     # Local apps
     "user",
 ]
@@ -225,5 +226,16 @@ TESTING = (
     )
     or env("PYTEST_XDIST_WORKER") is not None
 )
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Bus Ticket API',
+    'DESCRIPTION': 'Bus Ticketing System',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
 
 AUTH_USER_MODEL = "user.User"
