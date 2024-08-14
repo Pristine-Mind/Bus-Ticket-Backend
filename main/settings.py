@@ -75,6 +75,9 @@ INSTALLED_APPS = [
     # External apps
     "admin_auto_filters",
     "corsheaders",
+    "phonenumber_field",
+    # Local apps
+    "user",
 ]
 
 MIDDLEWARE = [
@@ -115,7 +118,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT"),
+        "PORT": "5432",
         "NAME": env("DB_NAME"),
         "USER": env("DB_USER"),
         "PASSWORD": env("DB_PASSWORD"),
@@ -222,3 +225,5 @@ TESTING = (
     )
     or env("PYTEST_XDIST_WORKER") is not None
 )
+
+AUTH_USER_MODEL = "user.User"
