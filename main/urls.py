@@ -18,6 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from user.views import dev_sign_in, google_oauth
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("dev/sign_in/", dev_sign_in, name="dev-sign-in"),
+    path("o/google", google_oauth, name="google_oauth"),
 ]

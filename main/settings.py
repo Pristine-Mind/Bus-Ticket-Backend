@@ -45,6 +45,12 @@ env = environ.Env(
     DJANGO_MEDIA_ROOT=(str, os.path.join(BASE_DIR, "assets/media")),
     # Testing
     PYTEST_XDIST_WORKER=(str, None),
+    # Google SSO
+    USE_GOOGLE_OAUTH=(bool, False),
+    GOOGLE_OAUTH_CLIENT_ID=(str, None),
+    GOOGLE_OAUTH_SECRET=(str, None),
+    GOOGLE_OAUTH_REDIRECT_URL=(str, None),
+    APP_FRONTEND_HOST=str,
 )
 
 # Quick-start development settings - unsuitable for production
@@ -228,14 +234,25 @@ TESTING = (
 )
 
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Bus Ticket API',
-    'DESCRIPTION': 'Bus Ticketing System',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
+    "TITLE": "Bus Ticket API",
+    "DESCRIPTION": "Bus Ticketing System",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 AUTH_USER_MODEL = "user.User"
+
+# Google SSO
+USE_GOOGLE_OAUTH = env("USE_GOOGLE_OAUTH")
+GOOGLE_OAUTH_CLIENT_ID = env("GOOGLE_OAUTH_CLIENT_ID")
+GOOGLE_OAUTH_SECRET = env("GOOGLE_OAUTH_SECRET")
+GOOGLE_OAUTH_REDIRECT_URL = env("GOOGLE_OAUTH_REDIRECT_URL")
+# TODO: We need these lines below to allow the Google sign in popup to work.
+SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+APP_FRONTEND_HOST = env("APP_FRONTEND_HOST")
+LOGIN_REDIRECT_URL = "/"

@@ -26,6 +26,7 @@ django-redis = "^5.3.0"
 uwsgi = "*"
 strawberry-graphql-django = {extras = ["strawberry-graphql"], version = "0.47.1"}
 django-phonenumber-field= {extras = ["phonenumbers"], version = "8.0.0"}
+google-api-python-client = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
