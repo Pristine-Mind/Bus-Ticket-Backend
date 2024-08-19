@@ -71,3 +71,16 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("The email or password is invalid.")
         attrs.update(dict(user=user))
         return attrs
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "id",
+            "username",
+            "role",
+            "first_name",
+            "last_name",
+            "email",
+        )

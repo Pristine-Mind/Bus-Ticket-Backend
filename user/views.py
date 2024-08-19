@@ -9,12 +9,14 @@ from django.views.decorators.csrf import csrf_exempt
 from drf_spectacular.utils import extend_schema
 from google.auth.transport import requests
 from google.oauth2 import id_token
-from rest_framework import response, status, views
+from rest_framework import response, status, views, viewsets
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 
 from user.models import User
 
-from .serializers import LoginSerializer, RegisterSerializer
+from .serializers import LoginSerializer, RegisterSerializer, UserSerializer
 
 
 def bad_request(message):
@@ -33,7 +35,6 @@ class RegistrationView(views.APIView):
 
 @extend_schema(request=None, responses=LoginSerializer)
 class LoginView(views.APIView):
-    permission_classes = []
 
     def post(self, request):
         email = request.data.get("email", None)
@@ -48,8 +49,6 @@ class LoginView(views.APIView):
                 api_key.created = timezone.now()
                 api_key.save()
 
-            # TODO: Update profile as well
-
             return JsonResponse(
                 {
                     "token": api_key.key,
@@ -62,6 +61,20 @@ class LoginView(views.APIView):
             )
         else:
             return bad_request("Invalid username or password")
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    @action(
+        detail=False,
+        url_path="me",
+        serializer_class=UserSerializer,
+    )
+    def get_authenticated_user_info(self, request, *args, **kwargs):
+        return response.Response(self.get_serializer_class()(request.user).data)
 
 
 @csrf_exempt

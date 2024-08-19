@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "phonenumber_field",
     "drf_spectacular",
+    "rest_framework",
     # Local apps
     "user",
 ]
@@ -103,6 +104,7 @@ ROOT_URLCONF = "main.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": os.path.join(BASE_DIR, "templates"),
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

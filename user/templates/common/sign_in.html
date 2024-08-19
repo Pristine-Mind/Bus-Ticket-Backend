@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <title>Login Page</title>
     <script src="https://accounts.google.com/gsi/client" async></script>
-    <script>
-        function onGoogleSignIn(googleUser) {
-            const id_token = googleUser.getAuthResponse().id_token;
-            console.log(id_token, "FFFFF"); // You may want to send this token to your backend server
-        }
-    </script>
     <style>
         body {
             font-family: Arial, sans-serif;

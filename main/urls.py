@@ -15,13 +15,32 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from rest_framework import routers
 
-from user.views import dev_sign_in, google_oauth
+from user.views import (
+    LoginView,
+    RegistrationView,
+    UserViewSet,
+    dev_sign_in,
+    google_oauth,
+)
+
+router = routers.DefaultRouter()
+
+router.register(r"users", UserViewSet, basename="users")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("dev/sign_in/", dev_sign_in, name="dev-sign-in"),
+    path("api/v1/", include(router.urls)),
     path("o/google", google_oauth, name="google_oauth"),
+    path("register", RegistrationView.as_view()),
+    path("login", LoginView.as_view()),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
