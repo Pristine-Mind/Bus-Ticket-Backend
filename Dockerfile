@@ -14,6 +14,7 @@ RUN apt-get update -y \
         gcc libc-dev gdal-bin libproj-dev \
         # Helper packages
         wait-for-it \
+        gettext \
     # Upgrade pip and install python packages for code
     && pip install --upgrade --no-cache-dir pip poetry \
     && poetry --version \
