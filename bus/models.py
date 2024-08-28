@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from user.models import User
 
 
@@ -30,11 +31,15 @@ class Bus(models.Model):
         NON_AC : str
             Non Air Conditioned bus.
         """
+
         AC = "ac", _("Air Conditioned")
         NON_AC = "non_ac", _("Non Air Conditioned")
 
     bus_number = models.CharField(
-        max_length=20, unique=True, verbose_name=_("Bus Number"), help_text=_("Unique identifier for the bus (e.g., ABC123).")
+        max_length=20,
+        unique=True,
+        verbose_name=_("Bus Number"),
+        help_text=_("Unique identifier for the bus (e.g., ABC123)."),
     )
     bus_type = models.CharField(
         max_length=20,
@@ -45,7 +50,9 @@ class Bus(models.Model):
     )
     capacity = models.IntegerField(verbose_name=_("Capacity"), help_text=_("Total number of seats available on the bus."))
     availability_status = models.BooleanField(
-        default=True, verbose_name=_("Availability Status"), help_text=_("Indicates whether the bus is available for booking.")
+        default=True,
+        verbose_name=_("Availability Status"),
+        help_text=_("Indicates whether the bus is available for booking."),
     )
 
     def __str__(self):
@@ -71,7 +78,9 @@ class Route(models.Model):
     start_location = models.CharField(
         max_length=100, verbose_name=_("Start Location"), help_text=_("Starting point of the bus route.")
     )
-    end_location = models.CharField(max_length=100, verbose_name=_("End Location"), help_text=_("Ending point of the bus route."))
+    end_location = models.CharField(
+        max_length=100, verbose_name=_("End Location"), help_text=_("Ending point of the bus route.")
+    )
     stops = models.TextField(verbose_name=_("Stops"), help_text=_("Comma separated list of intermediate stops."))
     scheduled_time = models.TimeField(verbose_name=_("Scheduled Time"), help_text=_("Scheduled departure time of the bus."))
 
@@ -95,7 +104,9 @@ class BusRoute(models.Model):
         Number of seats available for booking on this bus.
     """
 
-    bus = models.ForeignKey(Bus, on_delete=models.CASCADE, verbose_name=_("Bus"), help_text=_("Select the bus for this route."))
+    bus = models.ForeignKey(
+        Bus, on_delete=models.CASCADE, verbose_name=_("Bus"), help_text=_("Select the bus for this route.")
+    )
     route = models.ForeignKey(
         Route, on_delete=models.CASCADE, verbose_name=_("Route"), help_text=_("Select the route for this bus.")
     )
@@ -120,7 +131,9 @@ class Booking(models.Model):
         Time when the booking was made.
     """
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_("User"), help_text=_("The user making the booking."))
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, verbose_name=_("User"), help_text=_("The user making the booking.")
+    )
     booking_time = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Booking Time"), help_text=_("Time when the booking was made.")
     )
@@ -147,7 +160,10 @@ class BookingDetail(models.Model):
     """
 
     bus_route = models.ForeignKey(
-        BusRoute, on_delete=models.CASCADE, verbose_name=_("Bus Route"), help_text=_("The specific bus and route being booked.")
+        BusRoute,
+        on_delete=models.CASCADE,
+        verbose_name=_("Bus Route"),
+        help_text=_("The specific bus and route being booked."),
     )
     seat_numbers = models.IntegerField(
         verbose_name=_("Seat Numbers"), help_text=_("The list of seat numbers assigned to the user for this route.")
