@@ -15,6 +15,7 @@ import sys
 from pathlib import Path
 
 import environ
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,12 +87,14 @@ INSTALLED_APPS = [
     "rest_framework",
     # Local apps
     "user",
+    "bus",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -163,6 +166,8 @@ LANGUAGE_CODE = "en-us"
 TIME_ZONE = env("DJANGO_TIME_ZONE")
 
 USE_I18N = True
+
+USE_L10N = True
 
 USE_TZ = True
 
@@ -237,6 +242,8 @@ TESTING = (
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 100,
 }
 
 SPECTACULAR_SETTINGS = {
@@ -258,3 +265,15 @@ SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
 APP_FRONTEND_HOST = env("APP_FRONTEND_HOST")
 LOGIN_REDIRECT_URL = "/"
+
+LANGUAGE_CODE = "en-us"
+LANGUAGES = [
+    ("en", _("English")),
+    ("ne", _("Nepali")),
+]
+MODELTRANSLATION_DEFAULT_LANGUAGE = "en"
+MODELTRANSLATION_LANGUAGES = ("en", "ne")
+LOCALEURL_USE_ACCEPT_LANGUAGE = True
+
+# Locale dir for language transaction
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]

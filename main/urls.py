@@ -19,11 +19,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework import routers
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
+)
+from rest_framework import routers
+
+from bus.views import (
+    BookingDetailViewSet,
+    BookingViewSet,
+    BusRouteViewSet,
+    BusViewSet,
+    RouteViewSet,
 )
 from user.views import (
     LoginView,
@@ -36,6 +44,12 @@ from user.views import (
 router = routers.DefaultRouter()
 
 router.register(r"users", UserViewSet, basename="users")
+router.register(r"buses", BusViewSet, basename="buses")
+router.register(r"routes", RouteViewSet, basename="routes")
+router.register(r"bus-routes", BusRouteViewSet, basename="bus-routes")
+router.register(r"bookings", BookingViewSet, basename="bookings")
+router.register(r"booking-details", BookingDetailViewSet, basename="booking-details")
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),

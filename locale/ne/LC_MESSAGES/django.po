@@ -1,0 +1,215 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-28 07:19+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: bus/models.py:33
+msgid "Air Conditioned"
+msgstr ""
+
+#: bus/models.py:34
+msgid "Non Air Conditioned"
+msgstr ""
+
+#: bus/models.py:37
+msgid "Bus Number"
+msgstr ""
+
+#: bus/models.py:37
+msgid "Unique identifier for the bus (e.g., ABC123)."
+msgstr ""
+
+#: bus/models.py:43
+msgid "Bus Type"
+msgstr ""
+
+#: bus/models.py:44
+msgid "Type of the bus (e.g., Air Conditioned, Sleeper)."
+msgstr ""
+
+#: bus/models.py:46
+msgid "Capacity"
+msgstr ""
+
+#: bus/models.py:46
+msgid "Total number of seats available on the bus."
+msgstr ""
+
+#: bus/models.py:48
+msgid "Availability Status"
+msgstr ""
+
+#: bus/models.py:48
+msgid "Indicates whether the bus is available for booking."
+msgstr ""
+
+#: bus/models.py:72
+msgid "Start Location"
+msgstr ""
+
+#: bus/models.py:72
+msgid "Starting point of the bus route."
+msgstr ""
+
+#: bus/models.py:74
+msgid "End Location"
+msgstr ""
+
+#: bus/models.py:74
+msgid "Ending point of the bus route."
+msgstr ""
+
+#: bus/models.py:75
+msgid "Stops"
+msgstr ""
+
+#: bus/models.py:75
+msgid "Comma separated list of intermediate stops."
+msgstr ""
+
+#: bus/models.py:76
+msgid "Scheduled Time"
+msgstr ""
+
+#: bus/models.py:76
+msgid "Scheduled departure time of the bus."
+msgstr ""
+
+#: bus/models.py:98
+msgid "Bus"
+msgstr ""
+
+#: bus/models.py:98
+msgid "Select the bus for this route."
+msgstr ""
+
+#: bus/models.py:100
+msgid "Route"
+msgstr ""
+
+#: bus/models.py:100
+msgid "Select the route for this bus."
+msgstr ""
+
+#: bus/models.py:102
+msgid "Date"
+msgstr ""
+
+#: bus/models.py:102
+msgid "Date on which the bus is scheduled for this route."
+msgstr ""
+
+#: bus/models.py:104
+msgid "Available Seats"
+msgstr ""
+
+#: bus/models.py:104
+msgid "Number of seats available for booking on this bus."
+msgstr ""
+
+#: bus/models.py:123 user/models.py:35
+msgid "User"
+msgstr ""
+
+#: bus/models.py:123
+msgid "The user making the booking."
+msgstr ""
+
+#: bus/models.py:125
+msgid "Booking Time"
+msgstr ""
+
+#: bus/models.py:125
+msgid "Time when the booking was made."
+msgstr ""
+
+#: bus/models.py:129
+msgid "Book"
+msgstr ""
+
+#: bus/models.py:130
+msgid "Multiple bookings for different routes."
+msgstr ""
+
+#: bus/models.py:150
+msgid "Bus Route"
+msgstr ""
+
+#: bus/models.py:150
+msgid "The specific bus and route being booked."
+msgstr ""
+
+#: bus/models.py:153
+msgid "Seat Numbers"
+msgstr ""
+
+#: bus/models.py:153
+msgid "The list of seat numbers assigned to the user for this route."
+msgstr ""
+
+#: main/settings.py:269
+msgid "English"
+msgstr ""
+
+#: main/settings.py:270
+msgid "Nepali"
+msgstr ""
+
+#: user/models.py:8
+msgid "Email Address"
+msgstr ""
+
+#: user/models.py:10
+msgid "Username"
+msgstr ""
+
+#: user/models.py:12
+msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+msgstr ""
+
+#: user/models.py:15
+msgid "Full Name"
+msgstr ""
+
+#: user/models.py:15
+msgid "Full name is auto generated."
+msgstr ""
+
+#: user/models.py:31
+msgid "Admin"
+msgstr ""
+
+#: user/models.py:32
+msgid "Customer"
+msgstr ""
+
+#: user/models.py:35
+msgid "User whom profile belongs"
+msgstr ""
+
+#: user/models.py:37
+msgid "User Type"
+msgstr ""
+
+#: user/models.py:37
+msgid "User user type"
+msgstr ""
+
+#: user/serializers.py:68
+msgid "Request an admin to activate your account."
+msgstr ""
