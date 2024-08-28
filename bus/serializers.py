@@ -1,6 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 from .models import Bus, Route, BusRoute, Booking, BookingDetail
 
@@ -69,7 +70,7 @@ class BookingDetailSerializer(serializers.ModelSerializer):
         }
 
 
-class BookingSerializer(serializers.ModelSerializer):
+class BookingSerializer(WritableNestedModelSerializer):
     """
     Serializer for the Booking model.
     """
@@ -84,20 +85,20 @@ class BookingSerializer(serializers.ModelSerializer):
             'booking_time': {'help_text': _("Time when the booking was made.")}
         }
 
-    def create(self, validated_data):
-        """
-        Override the create method to handle nested BookingDetail data.
-        """
-        booking_details_data = validated_data.pop('book')
-        booking = Booking.objects.create(**validated_data)
+    # def create(self, validated_data):
+    #     """
+    #     Override the create method to handle nested BookingDetail data.
+    #     """
+    #     booking_details_data = validated_data.pop('book')
+    #     booking = Booking.objects.create(**validated_data)
 
-        for detail_data in booking_details_data:
-            BusRoute = detail_data.pop('bus_route')
-            booking_detail = BookingDetail.objects.create(
-                booking=booking,
-                bus_route=BusRoute,
-                **detail_data
-            )
-            booking.book.add(booking_detail)
+    #     for detail_data in booking_details_data:
+    #         BusRoute = detail_data.pop('bus_route')
+    #         booking_detail = BookingDetail.objects.create(
+    #             booking=booking,
+    #             bus_route=BusRoute,
+    #             **detail_data
+    #         )
+    #         booking.book.add(booking_detail)
 
-        return booking
+    #     return booking
