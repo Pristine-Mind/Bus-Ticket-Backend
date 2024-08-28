@@ -12,7 +12,7 @@ class BusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bus
-        fields = ["id", "bus_number,", "bus_type", "capacity", "availability_status"]
+        fields = ["id", "bus_number", "bus_type", "capacity", "availability_status"]
         extra_kwargs = {
             "bus_number": {"help_text": _("Unique identifier for the bus (e.g., ABC123).")},
             "bus_type": {"help_text": _("Type of the bus (e.g., Air Conditioned, Sleeper).")},

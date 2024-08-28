@@ -26,6 +26,13 @@ from drf_spectacular.views import (
 )
 from rest_framework import routers
 
+from bus.views import (
+    BookingDetailViewSet,
+    BookingViewSet,
+    BusRouteViewSet,
+    BusViewSet,
+    RouteViewSet,
+)
 from user.views import (
     LoginView,
     RegistrationView,
@@ -37,6 +44,12 @@ from user.views import (
 router = routers.DefaultRouter()
 
 router.register(r"users", UserViewSet, basename="users")
+router.register(r"buses", BusViewSet, basename="buses")
+router.register(r"routes", RouteViewSet, basename="routes")
+router.register(r"bus-routes", BusRouteViewSet, basename="bus-routes")
+router.register(r"bookings", BookingViewSet, basename="bookings")
+router.register(r"booking-details", BookingDetailViewSet, basename="booking-details")
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
