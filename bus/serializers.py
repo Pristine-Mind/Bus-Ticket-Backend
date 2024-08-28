@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-from drf_writable_nested.serializers import WritableNestedModelSerializer
+from drf_writable_nested.serializers import NestedCreateMixin, NestedUpdateMixin
 from rest_framework import serializers
 
 from .models import Booking, BookingDetail, Bus, BusRoute, Route
@@ -42,12 +42,12 @@ class BusRouteSerializer(serializers.ModelSerializer):
     Serializer for the BusRoute model.
     """
 
-    bus = BusSerializer()
-    route = RouteSerializer()
+    bus_details = BusSerializer(source="bus", read_only=True)
+    route_details = RouteSerializer(source="route", read_only=True)
 
     class Meta:
         model = BusRoute
-        fields = ["id", "bus", "route", "date", "available_seats"]
+        fields = ["id", "bus", "route", "date", "available_seats", "bus_details", "route_details"]
         extra_kwargs = {
             "date": {"help_text": _("Date on which the bus is scheduled for this route.")},
             "available_seats": {"help_text": _("Number of seats available for booking on this bus.")},
@@ -59,41 +59,22 @@ class BookingDetailSerializer(serializers.ModelSerializer):
     Serializer for the BookingDetail model.
     """
 
-    bus_route = BusRouteSerializer()
+    bus_route_details = BusRouteSerializer(read_only=True)
 
     class Meta:
         model = BookingDetail
-        fields = ["id", "bus_route", "seat_numbers"]
+        fields = ["id", "bus_route", "seat_numbers", "bus_route_details"]
         extra_kwargs = {"seat_numbers": {"help_text": _("The list of seat numbers assigned to the user for this route.")}}
 
 
-class BookingSerializer(WritableNestedModelSerializer):
+class BookingSerializer(NestedUpdateMixin, NestedCreateMixin, serializers.ModelSerializer):
     """
     Serializer for the Booking model.
     """
 
     book = BookingDetailSerializer(many=True)
-    user = serializers.StringRelatedField()
 
     class Meta:
         model = Booking
         fields = ["id", "user", "booking_time", "book"]
         extra_kwargs = {"booking_time": {"help_text": _("Time when the booking was made.")}}
-
-    # def create(self, validated_data):
-    #     """
-    #     Override the create method to handle nested BookingDetail data.
-    #     """
-    #     booking_details_data = validated_data.pop('book')
-    #     booking = Booking.objects.create(**validated_data)
-
-    #     for detail_data in booking_details_data:
-    #         BusRoute = detail_data.pop('bus_route')
-    #         booking_detail = BookingDetail.objects.create(
-    #             booking=booking,
-    #             bus_route=BusRoute,
-    #             **detail_data
-    #         )
-    #         booking.book.add(booking_detail)
-
-    #     return booking
