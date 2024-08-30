@@ -1,7 +1,13 @@
 from django.test import TestCase
 
-from .models import Bus, Route, BusRoute, Booking, BookingDetail
-from .factories import BusFactory, RouteFactory, BusRouteFactory, BookingFactory, BookingDetailFactory
+from .factories import (
+    BookingDetailFactory,
+    BookingFactory,
+    BusFactory,
+    BusRouteFactory,
+    RouteFactory,
+)
+from .models import Booking, BookingDetail, Bus, BusRoute, Route
 
 
 class BusModelTest(TestCase):

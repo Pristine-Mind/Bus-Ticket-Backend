@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    services:
+      db:
+        image: postgis/postgis:13-3.1-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker
+        
+    - name: Install Docker Compose
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+        
+    - name: Create .env file
+      run: |
+        echo "DJANGO_SECRET_KEY=test" >> .env
+        echo "DB_HOST=localhost" >> .env
+        echo "DB_NAME=postgres" >> .env
+        echo "DB_USER=postgres" >> .env
+        echo "DB_PASSWORD=postgres" >> .env
+        echo "APP_FRONTEND_HOST=http://localhost:8000/" >> .env
+
+
+    - name: Build and run containers
+      run: |
+        docker-compose up -d --build
+        
+    - name: Check for pending migrations
+      run: |
+        docker-compose run web python manage.py makemigrations --check --dry-run
+        
+    - name: Run tests with pytest
+      run: |
+        docker-compose run web pytest
+
+    - name: Cleanup
+      run: |
+        docker-compose down

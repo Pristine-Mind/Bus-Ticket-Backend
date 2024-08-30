@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     # Local apps
     "user",
     "bus",
+    "review",
 ]
 
 MIDDLEWARE = [
