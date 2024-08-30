@@ -40,6 +40,7 @@ from user.views import (
     dev_sign_in,
     google_oauth,
 )
+from review.views import FeedbackReviewViewSet, FAQViewSet
 
 router = routers.DefaultRouter()
 
@@ -49,7 +50,8 @@ router.register(r"routes", RouteViewSet, basename="routes")
 router.register(r"bus-routes", BusRouteViewSet, basename="bus-routes")
 router.register(r"bookings", BookingViewSet, basename="bookings")
 router.register(r"booking-details", BookingDetailViewSet, basename="booking-details")
-
+router.register(r'feedback-reviews', FeedbackReviewViewSet, basename='feedback-review')
+router.register(r'faqs', FAQViewSet, basename='faq')
 
 urlpatterns = [
     path("admin/", admin.site.urls),
