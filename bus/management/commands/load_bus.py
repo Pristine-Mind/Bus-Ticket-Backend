@@ -11,7 +11,10 @@ class Command(BaseCommand):
     help = "Load dummy bus data"
 
     def handle(self, *args, **kwargs):
-
+        print(Bus.objects.all().delete())
+        print(Route.objects.all().delete())
+        print(BusRoute.objects.all().delete())
+        print(Booking.objects.all().delete())
         buses = []
         for i in range(20):
             bus_number = f"BUS{i+1:03d}"
@@ -44,7 +47,7 @@ class Command(BaseCommand):
             available_seats = random.randint(10, bus.capacity)
             bus_route = BusRoute.objects.create(bus=bus, route=route, date=date, available_seats=available_seats)
             bus_routes.append(bus_route)
-        self.stdout.write(self.style.SUCCESS(f"Successfully loaded {len(bus_route)} bus routes!"))
+        self.stdout.write(self.style.SUCCESS(f"Successfully loaded {len(bus_routes)} bus routes!"))
 
         users = []
         for i in range(10):
