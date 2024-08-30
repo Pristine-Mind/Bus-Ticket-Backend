@@ -12,7 +12,7 @@ class FeedbackReviewViewSet(viewsets.ModelViewSet):
     serializer_class = FeedbackReviewSerializer
 
     def get_permissions(self):
-        if self.action == 'create':
+        if self.action == "create":
             self.permission_classes = [IsAuthenticated]
         else:
             self.permission_classes = []
