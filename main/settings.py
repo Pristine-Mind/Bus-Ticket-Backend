@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     "user",
     "bus",
     "review",
+    "rental",
 ]
 
 MIDDLEWARE = [
