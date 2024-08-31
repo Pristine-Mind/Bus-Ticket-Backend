@@ -45,6 +45,7 @@ class Reservation(models.Model):
         MINIVAN = 'minivan', 'Minivan'
         CAR = 'car', 'Car'
 
+    # TODO: Add seperate way to load city
     class CityChoices(models.TextChoices):
         KATHMANDU = 'kathmandu', 'Kathmandu'
         POKHARA = 'pokhara', 'Pokhara'
