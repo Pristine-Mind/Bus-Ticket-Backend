@@ -1,7 +1,9 @@
 from django.utils import timezone
+from django.db import transaction
 
 from rest_framework import serializers
 from .models import Reservation
+from .tasks import send_booking_confirmation_email
 
 
 class ReservationSerializer(serializers.ModelSerializer):
@@ -17,3 +19,14 @@ class ReservationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Date of Travel cannot be in the past.")
 
         return data
+
+    def create(self, validated_data):
+        reservation = super().create(validated_data)
+        email = validated_data['email']
+        username = validated_data['name']
+        transaction.on_commit(lambda: send_booking_confirmation_email.delay(
+            email,
+            username,
+        ))
+
+        return reservation

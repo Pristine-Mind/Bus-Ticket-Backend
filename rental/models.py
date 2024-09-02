@@ -121,6 +121,11 @@ class Reservation(models.Model):
         verbose_name="Additional Comments",
         help_text="Enter any additional specifications or requests (optional)."
     )
+    email = models.EmailField(
+        max_length=255,
+        verbose_name="Email",
+        help_text="Enter your email"
+        )
 
     def clean(self):
         """
