@@ -12,15 +12,17 @@ x-server: &base_server_setup
     DB_PASSWORD: ${DB_PASSWORD:-postgres}
     DJANGO_DEBUG: ${DJANGO_DEBUG:-true}
     CELERY_REDIS_URL: ${CELERY_REDIS_URL:-redis://redis:6379/0}
-    DJANGO_CACHE_REDIS_URL: ${DJANGO_CACHE_REDIS_URL:-redis://redis:6379/1}
+    CACHE_REDIS_URL: ${DJANGO_CACHE_REDIS_URL:-redis://redis:6379/1}
   extra_hosts:
     - "host.docker.internal:host-gateway"
   env_file:
     - .env
   volumes:
     - .:/code
+    - ipython_data_local:/root/.ipython/profile_default
   depends_on:
     - db
+    - redis
 
 
 services:
@@ -40,11 +42,23 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis-data:/redis_data
+
   web:
     <<: *base_server_setup
     ports:
       - 8000:8000
     command: python manage.py runserver 0.0.0.0:8000
 
+  celery:
+    <<: *base_server_setup
+    # TODO: Use development mode
+    command: bash -c "celery -A main worker --loglevel=info"
+
 volumes:
   postgres-data:
+  redis-data:
+  ipython_data_local:

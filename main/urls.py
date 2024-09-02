@@ -41,6 +41,7 @@ from user.views import (
     google_oauth,
 )
 from review.views import FeedbackReviewViewSet, FAQViewSet
+from rental.views import ReservationCreateView
 
 router = routers.DefaultRouter()
 
@@ -60,6 +61,7 @@ urlpatterns = [
     path("o/google", google_oauth, name="google_oauth"),
     path("register", RegistrationView.as_view()),
     path("login", LoginView.as_view()),
+    path('api/v1/reservations/', ReservationCreateView.as_view(), name='reservation-create'),
     # Docs
     path("docs/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     path("api-docs/", SpectacularAPIView.as_view(), name="schema"),

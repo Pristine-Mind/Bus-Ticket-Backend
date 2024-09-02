@@ -35,7 +35,7 @@ env = environ.Env(
     DJANGO_TIME_ZONE=(str, "UTC"),
     # Redis
     CELERY_REDIS_URL=str,
-    DJANGO_CACHE_REDIS_URL=str,
+    CACHE_REDIS_URL=str,
     # -- For running test (Optional)
     TEST_DJANGO_CACHE_REDIS_URL=(str, None),
     # Static, Media configs
@@ -52,6 +52,7 @@ env = environ.Env(
     GOOGLE_OAUTH_SECRET=(str, None),
     GOOGLE_OAUTH_REDIRECT_URL=(str, None),
     APP_FRONTEND_HOST=str,
+    EMAIL_BACKEND_SERVER=(str, "test")
 )
 
 # Quick-start development settings - unsuitable for production
@@ -89,6 +90,7 @@ INSTALLED_APPS = [
     "user",
     "bus",
     "review",
+    "rental",
 ]
 
 MIDDLEWARE = [
@@ -278,3 +280,23 @@ LOCALEURL_USE_ACCEPT_LANGUAGE = True
 
 # Locale dir for language transaction
 LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
+
+EMAIL_BACKEND_SERVER = env("EMAIL_BACKEND_SERVER").upper()
+
+if EMAIL_BACKEND_SERVER == "SMTP":
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.example.com'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = 'your-email@example.com'
+    EMAIL_HOST_PASSWORD = 'your-email-password'
+    DEFAULT_FROM_EMAIL = 'your-email@example.com'
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+CELERY_REDIS_URL = env("CELERY_REDIS_URL")
+CELERY_BROKER_URL = CELERY_REDIS_URL
+CELERY_RESULT_BACKEND = CELERY_REDIS_URL
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_ACKS_LATE = True
