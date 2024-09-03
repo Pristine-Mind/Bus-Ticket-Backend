@@ -23,7 +23,7 @@ def bad_request(message):
     return JsonResponse({"statusCode": 400, "error_message": message}, status=400)
 
 
-@extend_schema(request=None, responses=RegisterSerializer)
+@extend_schema(request=RegisterSerializer, responses=RegisterSerializer)
 class RegistrationView(views.APIView):
 
     def post(self, request, version=None):
@@ -33,7 +33,7 @@ class RegistrationView(views.APIView):
         return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@extend_schema(request=None, responses=LoginSerializer)
+@extend_schema(request=LoginSerializer, responses=LoginSerializer)
 class LoginView(views.APIView):
 
     def post(self, request):
