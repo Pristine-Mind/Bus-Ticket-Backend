@@ -15,25 +15,33 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
 from user.models import User
-
-from .serializers import LoginSerializer, RegisterSerializer, UserSerializer
+from .serializers import LoginSerializer, RegisterSerializer, UserSerializer, CustomResponseSerializer
 
 
 def bad_request(message):
-    return JsonResponse({"statusCode": 400, "error_message": message}, status=400)
+    return JsonResponse({"statusCode": 400, "message": message}, status=400)
 
 
-@extend_schema(request=RegisterSerializer, responses=RegisterSerializer)
+@extend_schema(request=RegisterSerializer, responses=CustomResponseSerializer)
 class RegistrationView(views.APIView):
 
     def post(self, request, version=None):
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return response.Response(serializer.data, status=status.HTTP_200_OK)
+
+        response_data = {
+            "success": True,
+            "message": "User Registered Successfully",
+            "errors": serializer.errors,
+            "response_body": None
+        }
+        response_serializer = CustomResponseSerializer(response_data)
+
+        return response.Response(response_serializer.data, status=status.HTTP_200_OK)
 
 
-@extend_schema(request=LoginSerializer, responses=LoginSerializer)
+@extend_schema(request=LoginSerializer, responses=CustomResponseSerializer)
 class LoginView(views.APIView):
 
     def post(self, request):
@@ -43,22 +51,30 @@ class LoginView(views.APIView):
         user = authenticate(email=email, password=password)
         if user is not None:
             api_key, created = Token.objects.get_or_create(user=user)
-
             # Reset the key's created_at time each time we get new credentials
             if not created:
                 api_key.created = timezone.now()
                 api_key.save()
 
-            return JsonResponse(
-                {
-                    "token": api_key.key,
-                    "username": email,
-                    "first": user.first_name,
-                    "last": user.last_name,
-                    "expires": api_key.created + timedelta(7),
-                    "id": user.id,
-                }
-            )
+            data = {
+                "token": api_key.key,
+                "username": email,
+                "first": user.first_name,
+                "last": user.last_name,
+                "expires": api_key.created + timedelta(7),
+                "id": user.id,
+            }
+
+            response_data = {
+                "success": True,
+                "message": "User Logged Successfully",
+                "errors": "",
+                "response_body": data
+            }
+
+            response_serializer = CustomResponseSerializer(response_data)
+            return response.Response(response_serializer.data, status=status.HTTP_200_OK)
+
         else:
             return bad_request("Invalid username or password")
 

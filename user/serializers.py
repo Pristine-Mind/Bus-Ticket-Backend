@@ -53,24 +53,25 @@ class RegisterSerializer(serializers.ModelSerializer):
                 username=self.validated_data["email"],
                 email=self.validated_data["email"],
                 password=self.validated_data["password"],
-                is_active=False,
+                is_active=True,
             )
-        return instance
+            return instance
 
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True, write_only=True)
     password = serializers.CharField(required=True, write_only=True)
 
-    def validate(self, attrs):
-        email = attrs.get("email", "")
-        if User.objects.filter(email__iexact=email, is_active=False).exists():
-            raise serializers.ValidationError(gettext("Request an admin to activate your account."))
-        user = authenticate(email=email, password=attrs.get("password", ""))
-        if not user:
-            raise serializers.ValidationError("The email or password is invalid.")
-        attrs.update(dict(user=user))
-        return attrs
+    # def validate(self, attrs):
+    #     email = attrs.get("email", "")
+    #     if User.objects.filter(email__iexact=email, is_active=False).exists():
+    #         raise serializers.ValidationError(gettext("Request an admin to activate your account."))
+    #     user = authenticate(email=email, password=attrs.get("password", ""))
+    #     if not user:
+    #         raise serializers.ValidationError("The email or password is invalid.")
+    #     attrs.update(dict(user=user))
+    #     print(attrs, "rrrr")
+    #     return attrs
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -83,3 +84,22 @@ class UserSerializer(serializers.ModelSerializer):
             "last_name",
             "email",
         )
+
+
+class CustomResponseSerializer(serializers.Serializer):
+    success = serializers.BooleanField(default=True)
+    message = serializers.CharField(default="", max_length=255)
+    errors = serializers.CharField(default="", allow_blank=True, required=False)
+    response_body = serializers.JSONField(required=False, allow_null=True)
+
+    def to_representation(self, instance):
+        """
+        Override this method if you need to control how the instance data
+        is returned in the response.
+        """
+        return {
+            'success': instance.get('success', True),
+            'message': instance.get('message', ""),
+            'errors': instance.get('errors', ""),
+            'response_body': instance.get('response_body', None)
+        }
